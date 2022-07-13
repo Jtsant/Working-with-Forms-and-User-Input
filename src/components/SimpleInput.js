@@ -8,12 +8,21 @@ const SimpleInput = (props) => {
 
   useEffect(() => {
     if (enteredNameIsValid) {
-      console.log("Name input is valid!");
+      console.log("Name Input is valid!");
     }
   }, [enteredNameIsValid]);
 
   const nameInputChangeHandler = (event) => {
     setEnteredName(event.target.value);
+  };
+
+  const nameInputBlurHandler = (event) => {
+    setEnteredNameTouched(true);
+
+    if (enteredName.trim() === "") {
+      setEnteredNameIsValid(false);
+      return;
+    }
   };
 
   const formSubmissionHandler = (event) => {
@@ -29,10 +38,11 @@ const SimpleInput = (props) => {
     setEnteredNameIsValid(true);
 
     console.log(enteredName);
+
     const enteredValue = nameInputRef.current.value;
     console.log(enteredValue);
 
-    // nameInputRef.current.value = ''; => Not Ideal cause of DOM Manipulation
+    // nameInputRef.current.value = ''; => NOT IDEAL Cause of DOM Manipulation
     setEnteredName("");
   };
 
@@ -51,6 +61,8 @@ const SimpleInput = (props) => {
           type="text"
           id="name"
           onChange={nameInputChangeHandler}
+          onBlur={nameInputBlurHandler}
+          value={enteredName}
         />
         {nameInputIsInvalid && (
           <p className="error-text">Name must not be empty.</p>
